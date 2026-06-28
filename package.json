@@ -1,6 +1,6 @@
 {
 	"name": "publish-to-wordpress",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Publish the active note as a WordPress draft, directly via the REST API or through a custom webhook.",
 	"main": "main.js",
 	"scripts": {
@@ -13,7 +13,6 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
-		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
 		"obsidian": "latest",
 		"tslib": "2.4.0",

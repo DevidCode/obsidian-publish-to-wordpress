@@ -150,9 +150,7 @@ export default class PublishToWordPressPlugin extends Plugin {
 
 		let imageFile: TFile | null = null;
 		if (imageName) {
-			const dest = this.app.metadataCache.getFirstLinkpathDest(imageName, file.path);
-			imageFile =
-				dest ?? this.app.vault.getFiles().find((f) => f.name === imageName) ?? null;
+			imageFile = this.app.metadataCache.getFirstLinkpathDest(imageName, file.path);
 		}
 
 		return { title, html, cibles, imageFile };
@@ -193,7 +191,7 @@ export default class PublishToWordPressPlugin extends Plugin {
 					},
 					body: bin,
 				});
-				featuredMedia = mediaRes.json?.id;
+				featuredMedia = (mediaRes.json as { id?: number } | undefined)?.id;
 			}
 			const body: Record<string, unknown> = {
 				title: note.title,
@@ -207,7 +205,8 @@ export default class PublishToWordPressPlugin extends Plugin {
 				headers: { Authorization: auth, "Content-Type": "application/json" },
 				body: JSON.stringify(body),
 			});
-			new Notice(`✅ Draft created (id ${res.json?.id ?? "?"}).`);
+			const created = res.json as { id?: number } | undefined;
+			new Notice(`✅ Draft created (id ${created?.id ?? "?"}).`);
 		} catch (e) {
 			new Notice("⛔ " + (e instanceof Error ? e.message : String(e)));
 		}
@@ -231,7 +230,8 @@ export default class PublishToWordPressPlugin extends Plugin {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload),
 			});
-			new Notice(`✅ Sent (id ${res.json?.id ?? "?"}).`);
+			const sent = res.json as { id?: number } | undefined;
+			new Notice(`✅ Sent (id ${sent?.id ?? "?"}).`);
 		} catch (e) {
 			new Notice("⛔ " + (e instanceof Error ? e.message : String(e)));
 		}
